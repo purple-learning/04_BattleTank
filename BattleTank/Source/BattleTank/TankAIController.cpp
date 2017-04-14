@@ -34,6 +34,16 @@ Super::BeginPlay();
 
 }
 
+//Aims towards the player location per every tick.
+void ATankAIController:: Tick(float Deltaseconds) {
+	Super::Tick(Deltaseconds);
+	//FVector HitLocation;
+	if (GetPlayerTank()) {
+		getAITank()->AimAt(GetPlayerTank()->GetActorLocation());
+	}
+}
+
+
 
 ATank* ATankAIController::GetPlayerTank() const {
 

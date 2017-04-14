@@ -3,6 +3,9 @@
 #include "BattleTank.h"
 #include "TankPlayerController.h"
 
+/*
+Needs heavy refactoring later.
+*/
 
 
 ATank* ATankPlayerController::GetControlledTank() const {
@@ -46,11 +49,13 @@ void ATankPlayerController::AimtowardsCrosshairs() {
 	
 	FVector Hitlocation;
 	if (GetSightRayHitLocation(Hitlocation)) {
-		//UE_LOG(LogTemp, Warning, TEXT("Look location is %s"), *(Hitlocation.ToString()));
+		//UE_LOG(LogTemp, Warning, TEXT("Hit location is %s"), *(Hitlocation.ToString()));
 		//TODO tell controlled tank to aim at this point
 		// Get world location through crosshair.
 		// If it hits the landscape
 		//tell the controler to hit something.
+
+		GetControlledTank()->AimAt(Hitlocation);
 	}
 
 }
@@ -68,18 +73,17 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const {
 	
 	if (GetLookDirection(ScreenLocation, LookDirection)) {
 		//Line-trace along that direaction, and see what we hit.(up to max range)
-		GetWorld()->LineTraceSingleByChannel
-		//GetLookVectorHitLocaton.
+		//GetGetLookVectorHitLocationWorld()->LineTraceSingleByChannel
+		GetLookVectorHitLocation(LookDirection,HitLocation);
 
-
-		
+		return true;
 	}
 
 
 	//Line-trace along that direaction, and see what we hit.(up to max range)
 
 	//HitLocation = FVector(1.0);
-	return true;
+	return false; //Fixed booleans.
 }
 
 //Chnge to bool if problems occurs. Bool looks unnescary.
@@ -90,4 +94,19 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& 
 	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraWorldDirection, Lookdirection);
 	//UE_LOG(LogTemp, Warning, TEXT("Look Direction is %s"), *(Lookdirection.ToString()));
 	//return false;
+}
+
+bool ATankPlayerController::GetLookVectorHitLocation(FVector Lookdirection, FVector& Hitlocation) const {
+	FHitResult HitResult;
+	auto StartLocation = PlayerCameraManager->GetCameraLocation();
+	auto EndLocation = StartLocation + (Lookdirection * MaxRange); //Unit directional vector times a constant.
+	if (GetWorld()->LineTraceSingleByChannel(HitResult,StartLocation,EndLocation,ECollisionChannel::ECC_Visibility )){
+		Hitlocation=HitResult.Location;
+		//UE_LOG(LogTemp, Warning, TEXT("HitLocation is %s"), *(HitResult.Location.ToString()));
+		return true;
+       }
+	
+	Hitlocation = FVector(0.0);
+	//GetWorld()->LineTraceSingleByChannel
+	return false;
 }

@@ -28,10 +28,14 @@ private:
 	UPROPERTY(EditAnywhere)
 	float crossHairYlocation = 0.33333;
 
+	UPROPERTY(EditAnywhere)
+		float MaxRange = 1000000.00; //Defaul 10km
+
 	//FVector2D ScreenLocation;
 
 	 void AimtowardsCrosshairs();
 	 bool GetSightRayHitLocation(FVector&) const;
 	 bool GetLookDirection(FVector2D, FVector&) const;
+	 bool GetLookVectorHitLocation(FVector,FVector&) const;
 	
 };

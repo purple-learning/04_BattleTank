@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
+#include "TankAimingComponet.h"
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
@@ -14,9 +14,17 @@ public:
 	// Sets default values for this pawn's properties
 	ATank();
 
+	void AimAt(FVector);
+	
+	UFUNCTION(BlueprintCallable,Category = Setup)
+	 void SetBarrelRefernce(UStaticMeshComponent* BarrelRef);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	UTankAimingComponet* TankAimingComponet = nullptr;
+
+
 
 public:	
 	// Called every frame
