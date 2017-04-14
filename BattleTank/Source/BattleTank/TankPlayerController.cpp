@@ -46,7 +46,7 @@ void ATankPlayerController::AimtowardsCrosshairs() {
 	
 	FVector Hitlocation;
 	if (GetSightRayHitLocation(Hitlocation)) {
-		UE_LOG(LogTemp, Warning, TEXT("Location is %s"), *(Hitlocation.ToString()));
+		//UE_LOG(LogTemp, Warning, TEXT("Look location is %s"), *(Hitlocation.ToString()));
 		//TODO tell controlled tank to aim at this point
 		// Get world location through crosshair.
 		// If it hits the landscape
@@ -57,6 +57,37 @@ void ATankPlayerController::AimtowardsCrosshairs() {
 //Get World location of linetrace through crosshair, true if hits landscape
 bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const {
 
-	HitLocation = FVector(1.0);
+	//Find the crosshair position.
+	int32 ViewportSizex, ViewportSizey;
+	GetViewportSize(ViewportSizex, ViewportSizey);
+	auto ScreenLocation = FVector2D(ViewportSizex*crossHairXlocation, ViewportSizey*crossHairYlocation);
+	//UE_LOG(LogTemp, Warning, TEXT("Screen location is %s"), *(ScreenLocation.ToString()));
+	//"De-project the sreen position of the crosshair to a world direction //ttps://docs.unrealengine.com/latest/INT/API/Runtime/Engine/GameFramework/APlayerController/DeprojectScreenPositionToWorld/index.html/
+	FVector LookDirection;
+	
+	
+	if (GetLookDirection(ScreenLocation, LookDirection)) {
+		//Line-trace along that direaction, and see what we hit.(up to max range)
+		GetWorld()->LineTraceSingleByChannel
+		//GetLookVectorHitLocaton.
+
+
+		
+	}
+
+
+	//Line-trace along that direaction, and see what we hit.(up to max range)
+
+	//HitLocation = FVector(1.0);
 	return true;
+}
+
+//Chnge to bool if problems occurs. Bool looks unnescary.
+bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& Lookdirection) const {
+	
+	FVector CameraWorldDirection;
+
+	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraWorldDirection, Lookdirection);
+	//UE_LOG(LogTemp, Warning, TEXT("Look Direction is %s"), *(Lookdirection.ToString()));
+	//return false;
 }
