@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTank.h"
+#include "TankBarrel.h"
 #include "TankAimingComponet.h"
 
 
@@ -73,5 +74,5 @@ void UTankAimingComponet::MoveBarrel(FVector Direction) {
 	auto DeltaRotator = AimRot - BarrelRot;
 	//UE_LOG(LogTemp, Warning, TEXT("Aiming Rot at %s"), *AimRot.ToString());
 
-	Barrel->Elevate(5.0);
+	Barrel->Elevate(DeltaRotator.Pitch);
 }

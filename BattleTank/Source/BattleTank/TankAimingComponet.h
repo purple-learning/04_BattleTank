@@ -2,11 +2,11 @@
 
 #pragma once
 
-#include "TankBarrel.h"
+//#include "TankBarrel.h"
 #include "Components/ActorComponent.h"
 #include "TankAimingComponet.generated.h"
 
-//class UTankBarrel;
+class UTankBarrel;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UTankAimingComponet : public UActorComponent

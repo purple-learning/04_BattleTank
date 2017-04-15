@@ -1,12 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-#include "TankBarrel.h"
-#include "TankAimingComponet.h"
+//#include "TankBarrel.h"
+//#include "TankAimingComponet.h"
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
-//class UTankBarrel;
+class UTankBarrel;
+class UTankAimingComponet;
+
+
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
