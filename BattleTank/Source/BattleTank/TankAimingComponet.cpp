@@ -2,6 +2,7 @@
 
 #include "BattleTank.h"
 #include "TankBarrel.h"
+#include "TankTurrent.h"
 #include "TankAimingComponet.h"
 
 
@@ -10,7 +11,7 @@ UTankAimingComponet::UTankAimingComponet()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;//TODO should this Tick.
+	PrimaryComponentTick.bCanEverTick = false;//TODO should this Tick.
 
 	// ...
 }
@@ -20,6 +21,10 @@ void UTankAimingComponet::SetBarrelRefrence(UTankBarrel* BarrelToSet) {
 	Barrel = BarrelToSet;
 }
 
+
+void UTankAimingComponet::SetTurrentRefernce(UTankTurrent* TurrentR) {
+	Turrent = TurrentR;
+}
 
 
 // Called when the game starts
@@ -54,13 +59,14 @@ void UTankAimingComponet::AimAt(FVector WorldSpaceAim, float LaunchSpeed) {
 		auto AimDirection = TossVlocity.GetSafeNormal();
 		//UE_LOG(LogTemp, Warning, TEXT("Aiming at %s"), *AimDirection.ToString());
 		MoveBarrel(AimDirection);
+		MoveTurrent(AimDirection);
 		auto Time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("Aiming Soultion found: %f"), Time);
+		//UE_LOG(LogTemp, Warning, TEXT("Aiming Soultion found: %f"), Time);
 	}
 
 	else {
 		auto Time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT(" No Aiming Soultion found: %f"), Time);
+		//UE_LOG(LogTemp, Warning, TEXT(" No Aiming Soultion found: %f"), Time);
 	}
 }
 
@@ -75,4 +81,14 @@ void UTankAimingComponet::MoveBarrel(FVector Direction) {
 	//UE_LOG(LogTemp, Warning, TEXT("Aiming Rot at %s"), *AimRot.ToString());
 
 	Barrel->Elevate(DeltaRotator.Pitch);
+	
+}
+
+void UTankAimingComponet::MoveTurrent(FVector Direction) {
+	auto TurrentRot = Turrent->GetForwardVector().Rotation();
+	auto AimRot = Direction.Rotation();
+	auto DeltaRotator = AimRot - TurrentRot;
+	//UE_LOG(LogTemp, Warning, TEXT("Aiming Rot at %s"), *AimRot.ToString());
+
+	Turrent->shiftTurrent(DeltaRotator.Yaw);
 }

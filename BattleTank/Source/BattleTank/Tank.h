@@ -8,7 +8,7 @@
 
 class UTankBarrel;
 class UTankAimingComponet;
-
+class UTankTurrent;
 
 
 UCLASS()
@@ -23,10 +23,16 @@ public:
 	void AimAt(FVector);
 	
 	UPROPERTY(EditAnywhere, Category = Firing)
-		float LaunchSpeed = 50000.0;
+		float LaunchSpeed = 4000.0;
 
 	UFUNCTION(BlueprintCallable,Category = Setup)
 	 void SetBarrelRefernce(UTankBarrel* BarrelRef);
+
+	UFUNCTION(BlueprintCallable, Category = Setup)
+		void SetTurrentRefernce(UTankTurrent* TurrentRefrence);
+	
+	UFUNCTION(BlueprintCallable, Category = Setup)
+		void Fire();
 
 protected:
 	// Called when the game starts or when spawned
